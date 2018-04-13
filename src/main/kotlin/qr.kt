@@ -1,20 +1,22 @@
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.MultiFormatWriter
+import com.google.zxing.*
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource
 import com.google.zxing.client.j2se.MatrixToImageWriter
+import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import java.io.File
-import java.util.*
+import javax.imageio.ImageIO
 
 fun main(args: Array<String>) {
-	val file = File("/Users/entaoyang/a.png")
-	makeQRImage(file, "Hello")
+	val file = File("/Users/yangentao/a.png")
+	qrImage(file, "http://www.haresoft.cn/appupdate/app?pkg=net.yet.hare")
+	val s = qrScan(file)
+	println("Hello? $s")
 
 }
 
-fun makeQRImage(file: File, content: String): Boolean {
-	val width = 300      //图片的宽度
-	val height = 300     //图片的高度
+fun qrImage(file: File, content: String): Boolean {
+	val width = 360      //图片的宽度
+	val height = 360     //图片的高度
 	val format = "png"    //图片的格式
 	/**
 	 * 定义二维码的参数
@@ -35,4 +37,13 @@ fun makeQRImage(file: File, content: String): Boolean {
 		e.printStackTrace()
 	}
 	return false
+}
+
+fun qrScan(file: File): String? {
+	val bufImage = ImageIO.read(file)
+	val bmp = BinaryBitmap(HybridBinarizer(BufferedImageLuminanceSource(bufImage)))
+	val hints = HashMap<DecodeHintType, Any>()
+	hints.put(DecodeHintType.CHARACTER_SET, "UTF-8")
+	val r = MultiFormatReader().decode(bmp, hints)
+	return r?.text
 }
