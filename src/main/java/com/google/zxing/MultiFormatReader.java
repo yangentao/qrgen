@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * MultiFormatReader is a convenience class and the main entry point into the library for most uses.
+ * MultiFormatReader is a convenience class and the net.yet.main entry point into the library for most uses.
  * By default it attempts to decode all barcode formats that the library supports. Optionally, you
  * can provide a hints object to request different behavior, for example only decoding QR codes.
  *
@@ -89,26 +89,11 @@ public final class MultiFormatReader implements Reader {
 	 */
 	public void setHints(Map<DecodeHintType, ?> hints) {
 		this.hints = hints;
-
-		boolean tryHarder = hints != null && hints.containsKey(DecodeHintType.TRY_HARDER);
-		@SuppressWarnings("unchecked")
 		Collection<BarcodeFormat> formats =
 				hints == null ? null : (Collection<BarcodeFormat>) hints.get(DecodeHintType.POSSIBLE_FORMATS);
 		Collection<Reader> readers = new ArrayList<>();
 		if (formats != null) {
-			boolean addOneDReader =
-					formats.contains(BarcodeFormat.UPC_A) ||
-							formats.contains(BarcodeFormat.UPC_E) ||
-							formats.contains(BarcodeFormat.EAN_13) ||
-							formats.contains(BarcodeFormat.EAN_8) ||
-							formats.contains(BarcodeFormat.CODABAR) ||
-							formats.contains(BarcodeFormat.CODE_39) ||
-							formats.contains(BarcodeFormat.CODE_93) ||
-							formats.contains(BarcodeFormat.CODE_128) ||
-							formats.contains(BarcodeFormat.ITF) ||
-							formats.contains(BarcodeFormat.RSS_14) ||
-							formats.contains(BarcodeFormat.RSS_EXPANDED);
-			// Put 1D readers upfront in "normal" mode
+
 
 			if (formats.contains(BarcodeFormat.QR_CODE)) {
 				readers.add(new QRCodeReader());

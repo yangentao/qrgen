@@ -109,8 +109,8 @@ public final class Encoder {
     // (With ECI in place,) Write the mode marker
     appendModeInfo(mode, headerBits);
 
-    // Collect data within the main segment, separately, to count its size if needed. Don't add it to
-    // main payload yet.
+    // Collect data within the net.yet.main segment, separately, to count its size if needed. Don't add it to
+    // net.yet.main payload yet.
     BitArray dataBits = new BitArray();
     appendBytes(content, mode, dataBits, encoding);
 
@@ -128,7 +128,7 @@ public final class Encoder {
 
     BitArray headerAndDataBits = new BitArray();
     headerAndDataBits.appendBitArray(headerBits);
-    // Find "length" of main segment and write it
+    // Find "length" of net.yet.main segment and write it
     int numLetters = mode == Mode.BYTE ? dataBits.getSizeInBytes() : content.length();
     appendLengthInfo(numLetters, version, mode, headerAndDataBits);
     // Put data together into the overall payload
